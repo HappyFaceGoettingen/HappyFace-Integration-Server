@@ -1,0 +1,116 @@
+Summary: HappyFace
+Name: HappyFace
+Version: 3.0.0
+Release: 2
+License: Apache License Version 2.0
+Group: System Environment/Daemons
+URL: https://ekptrac.physik.uni-karlsruhe.de/trac/HappyFace
+# svn co https://ekptrac.physik.uni-karlsruhe.de/public/HappyFace/branches/v3.0 HappyFace
+Source0: %{name}-%{version}.tar.gz
+# svn co https://ekptrac.physik.uni-karlsruhe.de/public/HappyFaceModules/trunk modules
+Source1: %{name}_modules-%{version}.tar.gz
+Source2: http://www-ekp.physik.uni-karlsruhe.de/~sroecker/files/hf3_config.tar.gz
+Source3: happyface3.conf
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+Requires: python >= 2.6
+Requires: httpd >= 2.0
+Requires: python-cherrypy >= 3.0
+Requires: python-sqlalchemy >= 0.5
+Requires: python-migrate
+Requires: python-mako
+Requires: python-matplotlib
+Requires: python-sqlite
+Requires: python-psycopg2
+Requires: python-lxml
+Requires: numpy
+Requires: mod_wsgi
+Requires: sqlite
+
+
+######################################################################
+#
+#
+# Preamble
+#
+# Macro definitions
+%define _prefix         /var/lib
+%define _sysconf_dir    /etc/httpd/conf.d
+%define _profile_dir    /etc/profile.d
+
+%define happyface_uid	373
+%define happyface_user	happyface3
+%define happyface_gid	373
+%define happyface_group	happyface3
+
+
+%description
+HappyFace is a powerful site specific monitoring system for data from multiple input sources. This system collects, processes, rates and presents all important monitoring information for the overall status and the services of a local or Grid computing site. 
+
+
+%prep
+%setup -b 0 -q -n %{name}
+%setup -b 1 -q -n modules
+%setup -b 2 -q -n config
+
+%build
+#make
+
+%install
+cd ..
+
+[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+
+# make directories
+! [ -d $RPM_BUILD_ROOT/%{_prefix} ] && mkdir -p $RPM_BUILD_ROOT/%{_prefix}
+! [ -d $RPM_BUILD_ROOT/%{_sysconf_dir} ] && mkdir -p $RPM_BUILD_ROOT/%{_sysconf_dir}
+
+# copy files
+cp -r %{name} $RPM_BUILD_ROOT/%{_prefix}/HappyFace3
+cp -r modules $RPM_BUILD_ROOT/%{_prefix}/HappyFace3
+cp -r config $RPM_BUILD_ROOT/%{_prefix}/HappyFace3
+cp -v %{SOURCE3} $RPM_BUILD_ROOT/%{_sysconf_dir}
+
+# a symbolic link
+ln -s %{_prefix}/HappyFace3 $RPM_BUILD_ROOT/%{_prefix}/HappyFace
+
+%clean
+[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+
+
+%post
+echo "Creating new user ..."
+groupadd %{happyface_group} -g %{happyface_gid}
+useradd %{happyface_user} -u %{happyface_uid} -g %{happyface_gid} -d %{_prefix}/HappyFace3 -M
+chown -R %{happyface_user}:%{happyface_group} %{_prefix}/HappyFace3
+
+echo "------------------------------------"
+echo "Populating default Happy Face database ..."
+cd %{_prefix}/HappyFace3
+su %{happyface_user} -c "python acquire.py"
+echo "------------------------------------"
+
+service httpd restart
+
+%preun
+service httpd stop
+
+%postun
+service httpd start
+
+echo "Deleting user ..."
+userdel -r %{happyface_user}
+
+
+%files
+%defattr(-,root,root)
+%{_prefix}
+%{_sysconfdir}
+#%{_profile_dir}
+
+
+%changelog
+* Fri Jul 19 2013 Gen Kawamura <Gen.Kawamura@cern.ch> and Christian Wehrberger <cgwehrberger@gmail.com> 3.0.0-1
+- rebuild to make working system
+
+* Wed Jul 17 2013 Gen Kawamura <Gen.Kawamura@cern.ch> and Christian Wehrberger <cgwehrberger@gmail.com> 3.0.0-0
+- initial packaging
