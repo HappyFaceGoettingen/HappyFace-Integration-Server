@@ -1,11 +1,11 @@
 Summary: HappyFace-ATLAS
 Name: HappyFace-ATLAS
 Version: 3.0.0
-Release: 20140512
+Release: 20150603
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: http://nagios-goegrid.gwdg.de/category
-Source0: %{name}_modules-%{version}.tar.gz
+Source0: HappyFaceATLASModules.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Requires: HappyFace = 3.0.0-1
 Requires: python-beautifulsoup
@@ -18,6 +18,10 @@ Requires: python-matplotlib
 # Preamble
 #
 # Macro definitions
+%define _branch_name    master
+%define _source_dir     HappyFaceATLASModules-%{_branch_name}
+
+
 %define _prefix         /var/lib/HappyFace3
 %define _category_cfg   %{_prefix}/config/categories-enabled
 %define _module_cfg     %{_prefix}/config/modules-enabled
@@ -35,7 +39,7 @@ HappyFace is a powerful site specific monitoring system for data from multiple i
 
 
 %prep
-%setup -b 0 -q -n %{name}_modules
+%setup0 -q -n %{_source_dir}
 
 
 %build
@@ -53,9 +57,9 @@ cd ..
 
 
 # copy files
-cp -vr %{name}_modules/modules $RPM_BUILD_ROOT/%{_prefix}
-cp -vr %{name}_modules/config/modules-enabled/* $RPM_BUILD_ROOT/%{_module_cfg}
-cp -vr %{name}_modules/config/categories-enabled/* $RPM_BUILD_ROOT/%{_category_cfg}
+cp -vr %{_source_dir}/modules $RPM_BUILD_ROOT/%{_prefix}
+cp -vr %{_source_dir}/config/modules-enabled/* $RPM_BUILD_ROOT/%{_module_cfg}
+cp -vr %{_source_dir}/config/categories-enabled/* $RPM_BUILD_ROOT/%{_category_cfg}
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
@@ -100,6 +104,8 @@ service httpd start
 
 
 %changelog
+* Wed Jun 03 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20150603
+- integrated with integration-server
 * Mon May 12 2014 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20140512
 - modified category name and module config according to O/R schema relationships
 * Tue Mar 03 2014 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-04032014

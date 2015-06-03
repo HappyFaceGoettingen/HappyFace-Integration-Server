@@ -1,12 +1,11 @@
 Summary: HappyFace-Grid-Engine
 Name: HappyFace-Grid-Engine
 Version: 3.0.0
-Release: 3
+Release: 4
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: https://ekptrac.physik.uni-karlsruhe.de/trac/HappyFace
-Source0: HappyFace-Red-Comet/red-comet.tar.gz
-Source1: HappyFace-Red-Comet/happyface-red-comet.cfg
+Source0: Red-Comet.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Requires: HappyFace = 3.0.0-1
 Requires: python >= 2.6
@@ -41,9 +40,16 @@ Requires: rpmforge-release
 # Preamble
 #
 # Macro definitions
+%define _branch_name    Zgok
+%define _source_dir     Red-Comet-%{_branch_name}
+
 %define _prefix         /var/lib/HappyFace3
+
 %define _category_cfg   %{_prefix}/config/categories-enabled
 %define _module_cfg     %{_prefix}/config/modules-enabled
+%define _category_dis_cfg   %{_prefix}/config/categories-disabled
+%define _module_dis_cfg     %{_prefix}/config/modules-disabled
+
 %define _cert_dir	%{_prefix}/cert
 %define _defaultconfig	%{_prefix}/defaultconfig
 
@@ -91,7 +97,7 @@ Note: How to generate grid certificate without passphrase
 Report Bugs and Opinions to <gen.kawamura@cern.ch>
 
 %prep
-%setup -b 0 -q -n red-comet
+%setup0 -q -n %{_source_dir}
 
 %build
 #make
@@ -111,30 +117,27 @@ cd ..
 ! [ -d $RPM_BUILD_ROOT/%{_sysconf_dir} ] && mkdir -p $RPM_BUILD_ROOT/%{_sysconf_dir}
 
 
+# rm .svn in devel dir
+find %{_source_dir} -type f | grep .svn | xargs -I {} rm -vf {}
+find %{_source_dir} -type d | grep .svn | sort -r | xargs -I {} rmdir -v {}
+
 
 # copy files
-cp -vr red-comet/modules $RPM_BUILD_ROOT/%{_prefix}
-cp -vr red-comet/config/modules-enabled/* $RPM_BUILD_ROOT/%{_module_cfg}
-cp -vr red-comet/config/categories-enabled/* $RPM_BUILD_ROOT/%{_category_cfg}
+cp -vr %{_source_dir}/modules $RPM_BUILD_ROOT/%{_prefix}
+cp -vr %{_source_dir}/config/modules-enabled/* $RPM_BUILD_ROOT/%{_module_cfg}
+cp -vr %{_source_dir}/config/categories-enabled/* $RPM_BUILD_ROOT/%{_category_cfg}
 
 
 # grid-related python codes
-cp -vr red-comet/hf/gridengine $RPM_BUILD_ROOT/%{_prefix}/hf
-cp -vr red-comet/hf/gridtoolkit $RPM_BUILD_ROOT/%{_prefix}/hf
-cp -vr red-comet/grid_enabled_acquire.py $RPM_BUILD_ROOT/%{_prefix}
+cp -vr %{_source_dir}/hf/gridengine $RPM_BUILD_ROOT/%{_prefix}/hf
+cp -vr %{_source_dir}/hf/gridtoolkit $RPM_BUILD_ROOT/%{_prefix}/hf
+cp -vr %{_source_dir}/grid_enabled_acquire.py $RPM_BUILD_ROOT/%{_prefix}
 
 
 
 
 # defaultconfig
-cp -v %{SOURCE1} $RPM_BUILD_ROOT/%{_defaultconfig}/
-
-
-# rm .svn in devel dir
-find $RPM_BUILD_ROOT/%{_prefix} -type f | grep .svn | xargs -I {} rm -vf {}
-find $RPM_BUILD_ROOT/%{_prefix} -type d | grep .svn | sort -r | xargs -I {} rmdir -v {}
-
-
+cp -v %{_source_dir}/defaultconfig/happyface.cfg $RPM_BUILD_ROOT/%{_defaultconfig}/
 
 
 %clean
@@ -143,7 +146,20 @@ find $RPM_BUILD_ROOT/%{_prefix} -type d | grep .svn | sort -r | xargs -I {} rmdi
 
 %post
 mv -v %{_defaultconfig}/happyface.cfg %{_defaultconfig}/happyface.cfg.org
-mv -v %{_defaultconfig}/happyface-red-comet.cfg %{_defaultconfig}/happyface.cfg
+
+## making default categories disabled
+! [ -e %{_module_dis_cfg} ] && mkdir -v %{_module_dis_cfg}
+! [ -e %{_category_dis_cfg} ] && mkdir -v %{_category_dis_cfg}
+
+## disabling default categories
+[ -e %{_category_cfg}/batch_system.cfg ] && mv -v %{_category_cfg}/batch_system.cfg %{_category_dis_cfg}
+[ -e %{_category_cfg}/infrastructure.cfg ] && mv -v %{_category_cfg}/infrastructure.cfg %{_category_dis_cfg}
+[ -e %{_category_cfg}/phedex_prod.cfg ] && mv -v %{_category_cfg}/phedex_prod.cfg %{_category_dis_cfg}
+
+## disabling default modules
+[ -e %{_module_cfg}/batch_system.cfg ] && mv -v %{_module_cfg}/batch_system.cfg %{_module_dis_cfg}
+[ -e %{_module_cfg}/phedex_prod.cfg ] && mv -v %{_module_cfg}/phedex_prod.cfg %{_module_dis_cfg}
+[ -e %{_module_cfg}/uschi_basic_dcap.cfg ] && mv -v %{_module_cfg}/uschi_*.cfg %{_module_dis_cfg}
 
 
 echo "Activating fetch-crl update daemons ..."
@@ -176,13 +192,15 @@ service httpd start
 %{_prefix}/hf/gridengine
 %{_prefix}/hf/gridtoolkit
 %{_prefix}/grid_enabled_acquire.py*
-%{_defaultconfig}/happyface-red-comet.cfg
+%{_defaultconfig}/happyface.cfg
 %{_category_cfg}
 %{_module_cfg}
 
 
 
 %changelog
+* Wed Jun 03 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-4
+- integrated with integration-server
 * Tue May 19 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-3
 - build sprint-4 Zgok
 * Fri Mar 06 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-2

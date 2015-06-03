@@ -1,9 +1,30 @@
 #!/bin/sh
 
-specs="happyface atlas atlas-intr atlas-webservice redcomet gridengine"
-usage="./rebuild.sh [spec]
+#-----------------------------------------------
+# Consts
+#-----------------------------------------------
 
-   specs=$specs
+## HappyFaceATLASModules
+HF_ATLAS_MODULES_PROJECT="HappyFaceATLASModules"
+HF_ATLAS_MODULES_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_ATLAS_MODULES_PROJECT}/zip"
+HF_ATLAS_MODULES_GIT_BRANCH="master"
+HF_ATLAS_MODULES_SPEC="HappyFace-ATLAS.spec"
+
+
+## HappyFaceF Red-comet
+HF_GRIDENGINE_PROJECT="Red-Comet"
+HF_REDCOMET_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_GRIDENGINE_PROJECT}/zip"
+HF_REDCOMET_GIT_BRANCH="Zgok"
+HF_GRIDENGINE_SPEC="HappyFace-Grid-Engine.spec"
+
+
+#-----------------------------------------------
+# Usage
+#-----------------------------------------------
+projects="happyface atlas atlas-webservice extra redcomet gridengine"
+usage="./rebuild.sh [project]
+
+   project=$projects
 "
 
 
@@ -13,32 +34,32 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 
-## create .rpmmacros
+#---------------------------------------------
+# Environments
+#---------------------------------------------
 echo "%_topdir        $PWD" > rpmmacros_HappyFace
 ln -sf $PWD/rpmmacros_HappyFace ~/.rpmmacros
 
-mkdir -v BUILD BUILDROOT
 
-
-
+mkdir -pv BUILD BUILDROOT SOURCES SPECS RPMS log
 dist=`uname -r | perl -pe "s/^.*\.(el[0-9])\..*$/\1/g"`
 
+
+#---------------------------------------------
+# Main
+#---------------------------------------------
 case "$1" in
     happyface)
 	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace.spec
 	rm -rvf BUILD BUILDROOT
 	;;
     atlas)
-	echo "------------------- Source packaging -----------------------"
-	cd SOURCES
-	tar czvf HappyFace-ATLAS_modules-3.0.0.tar.gz HappyFace-ATLAS_modules
-	cd ..
-
-	echo "-------------------- RPM packaging -------------------------"
-	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace-ATLAS.spec
-	rm -rvf BUILD BUILDROOT
+	GIT_PROJECT=$HF_ATLAS_MODULES_PROJECT
+	GIT=$HF_ATLAS_MODULES_GIT
+	GIT_BRANCH=$HF_ATLAS_MODULES_GIT_BRANCH
+	SPEC=$HF_ATLAS_MODULES_SPEC
 	;;
-    atlas-intr)
+    extra)
 	echo "------------------- Source packaging -----------------------"
 	cd SOURCES
 	tar czvf HappyFace-ATLAS-internal-resource_modules-3.0.0.tar.gz HappyFace-ATLAS-internal-resource_modules
@@ -47,6 +68,7 @@ case "$1" in
 	echo "-------------------- RPM packaging -------------------------"
 	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace-ATLAS-internal-resource.spec
 	rm -rvf BUILD BUILDROOT
+	exit 0
 	;;
     atlas-webservice)
 	echo "------------------- Source packaging -----------------------"
@@ -57,6 +79,7 @@ case "$1" in
 	echo "-------------------- RPM packaging -------------------------"
 	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace-ATLAS-webservice.spec
 	rm -rvf BUILD BUILDROOT
+	exit 0
 	;;
     redcomet)
 	echo "------------------- Source packaging -----------------------"
@@ -77,37 +100,30 @@ case "$1" in
 	echo "-------------------- RPM packaging -------------------------"
 	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace-Red-Comet.spec
 	rm -rvf BUILD BUILDROOT	
+	exit 0
 	;;
 
     gridengine)
-	echo "------------------- Source packaging -----------------------"
-	cd SOURCES/HappyFace-Red-Comet
-	[ -e Red-Comet ] && rm -rf Red-Comet
-	git clone https://github.com/HappyFaceGoettingen/Red-Comet.git -b Zgok
-	cp -v Red-Comet/defaultconfig/happyface.cfg happyface-red-comet.cfg
-
-	[ -e red-comet ] && rm -rf red-comet
-	[ ! -e red-comet/hf/gridengine ] && mkdir -pv red-comet/hf/gridengine
-	[ ! -e red-comet/hf/gridtoolkit ] && mkdir -pv red-comet/hf/gridtoolkit
-	cp -v Red-Comet/hf/gridengine/*.py red-comet/hf/gridengine/
-	cp -v Red-Comet/hf/gridtoolkit/*.py red-comet/hf/gridtoolkit/
-	cp -v Red-Comet/grid_enabled_acquire.py red-comet/
-	cp -rv Red-Comet/modules red-comet/
-	cp -rv Red-Comet/config red-comet/
-	cp -rv Red-Comet/defaultconfig red-comet/
-
-
-	tar czvf red-comet.tar.gz red-comet
-
-	cd ..
-	mv -v HappyFace-Red-Comet/red-comet.tar.gz .
-	ln -sf HappyFace-Red-Comet/happyface-red-comet.cfg .
-	cd ..
-
-	echo "-------------------- RPM packaging -------------------------"
-	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace-Grid-Engine.spec
-	rm -rvf BUILD BUILDROOT	
+	GIT_PROJECT=$HF_GRIDENGINE_PROJECT
+	GIT=$HF_REDCOMET_GIT
+	GIT_BRANCH=$HF_REDCOMET_GIT_BRANCH
+	SPEC=$HF_GRIDENGINE_SPEC
 	;;
     *)
+	exit 0
 	;;
 esac
+
+
+
+echo "------------------- Source packaging -----------------------"
+cd SOURCES
+rm -rvf ${GIT_PROJECT}-${GIT_BRANCH}
+wget $GIT/$GIT_BRANCH -O ${GIT_PROJECT}.zip
+unzip ${GIT_PROJECT}.zip
+cd ..
+
+echo "-------------------- RPM packaging -------------------------"
+rpmbuild --define 'dist .${dist}' --clean -ba SPECS/$SPEC
+rm -rvf BUILD BUILDROOT	
+
