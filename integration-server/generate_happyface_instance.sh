@@ -112,6 +112,9 @@ setup_HF_env(){
 
     cp -v $KEY_HOME/userkey.nopass.pem /var/lib/HappyFace3/cert/userkey.pem
     cp -v $KEY_HOME/usercert.pem /var/lib/HappyFace3/cert/usercert.pem
+    chmod 400 /var/lib/HappyFace3/cert/userkey.pem
+    chmod 644 /var/lib/HappyFace3/cert/usercert.pem
+
     chown happyface3:happyface3 /var/lib/HappyFace3/cert/userkey.pem /var/lib/HappyFace3/cert/usercert.pem
 }
 
