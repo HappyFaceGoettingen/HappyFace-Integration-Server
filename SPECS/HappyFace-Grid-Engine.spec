@@ -115,6 +115,8 @@ cd ..
 ! [ -d $RPM_BUILD_ROOT/%{_category_cfg} ] && mkdir -vp $RPM_BUILD_ROOT/%{_category_cfg}
 ! [ -d $RPM_BUILD_ROOT/%{_defaultconfig} ] && mkdir -vp $RPM_BUILD_ROOT/%{_defaultconfig}
 ! [ -d $RPM_BUILD_ROOT/%{_sysconf_dir} ] && mkdir -p $RPM_BUILD_ROOT/%{_sysconf_dir}
+! [ -d $RPM_BUILD_ROOT/%{_prefix}/static/images ] && mkdir -vp $RPM_BUILD_ROOT/%{_prefix}/static/images
+! [ -d $RPM_BUILD_ROOT/%{_prefix}/static/css ] && mkdir -vp $RPM_BUILD_ROOT/%{_prefix}/static/csss
 
 
 # rm .svn in devel dir
@@ -133,7 +135,9 @@ cp -vr %{_source_dir}/hf/gridengine $RPM_BUILD_ROOT/%{_prefix}/hf
 cp -vr %{_source_dir}/hf/gridtoolkit $RPM_BUILD_ROOT/%{_prefix}/hf
 cp -vr %{_source_dir}/grid_enabled_acquire.py $RPM_BUILD_ROOT/%{_prefix}
 
-
+# style sheets
+cp -v %{_source_dir}/static/tooltip.png  $RPM_BUILD_ROOT/%{_prefix}/static/images  
+cp -v %{_source_dir}/static/hf.css  $RPM_BUILD_ROOT/%{_prefix}/static/css
 
 
 # defaultconfig
@@ -192,6 +196,8 @@ service httpd start
 %{_prefix}/hf/gridengine
 %{_prefix}/hf/gridtoolkit
 %{_prefix}/grid_enabled_acquire.py*
+%{_prefix}/static/images
+%{_prefix}/static/css
 %{_defaultconfig}/happyface.cfg
 %{_category_cfg}
 %{_module_cfg}
