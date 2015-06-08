@@ -7,7 +7,7 @@ Group: System Environment/Daemons
 URL: http://nagios-goegrid.gwdg.de/category
 Source0: HappyFaceATLASModules.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-Requires: HappyFace = 3.0.0-1
+Requires: HappyFaceCore = 3.0.0-2
 Requires: python-beautifulsoup
 Requires: python-matplotlib
 

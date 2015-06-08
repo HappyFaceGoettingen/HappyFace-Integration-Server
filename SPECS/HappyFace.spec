@@ -1,16 +1,13 @@
-Summary: HappyFace
-Name: HappyFace
+Summary: HappyFaceCore
+Name: HappyFaceCore
 Version: 3.0.0
 Release: 2
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: https://ekptrac.physik.uni-karlsruhe.de/trac/HappyFace
 # svn co https://ekptrac.physik.uni-karlsruhe.de/public/HappyFace/branches/v3.0 HappyFace
-Source0: %{name}-%{version}.tar.gz
 # svn co https://ekptrac.physik.uni-karlsruhe.de/public/HappyFaceModules/trunk modules
-Source1: %{name}_modules-%{version}.tar.gz
-Source2: http://www-ekp.physik.uni-karlsruhe.de/~sroecker/files/hf3_config.tar.gz
-Source3: happyface3.conf
+Source0: HappyFaceCore.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Requires: python >= 2.6
 Requires: httpd >= 2.0
@@ -33,6 +30,9 @@ Requires: sqlite
 # Preamble
 #
 # Macro definitions
+%define _branch_name    master
+%define _source_dir     HappyFaceCore-%{_branch_name}
+
 %define _prefix         /var/lib
 %define _sysconf_dir    /etc/httpd/conf.d
 %define _profile_dir    /etc/profile.d
@@ -48,9 +48,7 @@ HappyFace is a powerful site specific monitoring system for data from multiple i
 
 
 %prep
-%setup -b 0 -q -n %{name}
-%setup -b 1 -q -n modules
-%setup -b 2 -q -n config
+%setup0 -q -n %{_source_dir}
 
 %build
 #make
@@ -65,10 +63,8 @@ cd ..
 ! [ -d $RPM_BUILD_ROOT/%{_sysconf_dir} ] && mkdir -p $RPM_BUILD_ROOT/%{_sysconf_dir}
 
 # copy files
-cp -r %{name} $RPM_BUILD_ROOT/%{_prefix}/HappyFace3
-cp -r modules $RPM_BUILD_ROOT/%{_prefix}/HappyFace3
-cp -r config $RPM_BUILD_ROOT/%{_prefix}/HappyFace3
-cp -v %{SOURCE3} $RPM_BUILD_ROOT/%{_sysconf_dir}
+cp -r %{_source_dir} $RPM_BUILD_ROOT/%{_prefix}/HappyFace3
+mv -v $RPM_BUILD_ROOT/%{_prefix}/HappyFace3/httpd_confd_happyface3.conf $RPM_BUILD_ROOT/%{_sysconf_dir}
 
 # a symbolic link
 ln -s %{_prefix}/HappyFace3 $RPM_BUILD_ROOT/%{_prefix}/HappyFace
@@ -109,6 +105,8 @@ userdel -r %{happyface_user}
 
 
 %changelog
+* Mon Jun 08 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-2
+- Integrated with integration server and changed the package name
 * Fri Jul 19 2013 Gen Kawamura <Gen.Kawamura@cern.ch> and Christian Wehrberger <cgwehrberger@gmail.com> 3.0.0-1
 - rebuild to make working system
 

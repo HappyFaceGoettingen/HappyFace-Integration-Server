@@ -4,6 +4,13 @@
 # Consts
 #-----------------------------------------------
 
+## HappyFaceCore
+HF_PROJECT="HappyFaceCore"
+HF_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_PROJECT}/zip"
+HF_GIT_BRANCH="master"
+HF_SPEC="HappyFace.spec"
+
+
 ## HappyFaceATLASModules
 HF_ATLAS_MODULES_PROJECT="HappyFaceATLASModules"
 HF_ATLAS_MODULES_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_ATLAS_MODULES_PROJECT}/zip"
@@ -50,8 +57,10 @@ dist=`uname -r | perl -pe "s/^.*\.(el[0-9])\..*$/\1/g"`
 #---------------------------------------------
 case "$1" in
     happyface)
-	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace.spec
-	rm -rvf BUILD BUILDROOT
+	GIT_PROJECT=$HF_PROJECT
+	GIT=$HF_GIT
+	GIT_BRANCH=$HF_GIT_BRANCH
+	SPEC=$HF_SPEC
 	;;
     atlas)
 	GIT_PROJECT=$HF_ATLAS_MODULES_PROJECT
