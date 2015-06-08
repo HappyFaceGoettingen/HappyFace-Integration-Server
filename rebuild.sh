@@ -8,7 +8,7 @@
 HF_PROJECT="HappyFaceCore"
 HF_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_PROJECT}/zip"
 HF_GIT_BRANCH="master"
-HF_SPEC="HappyFace.spec"
+HF_SPEC="HappyFaceCore.spec"
 
 
 ## HappyFaceATLASModules
@@ -25,10 +25,17 @@ HF_REDCOMET_GIT_BRANCH="Zgok"
 HF_GRIDENGINE_SPEC="HappyFace-Grid-Engine.spec"
 
 
+## HappyFace SmartPhone Devel Env
+HF_SMARTPHONE_DEVEL_PROJECT="HappyFaceSmartPhoneApp"
+HF_SMARTPHONE_DEVEL_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_SMARTPHONE_DEVEL_PROJECT}/zip"
+HF_SMARTPHONE_DEVEL_GIT_BRANCH="master"
+HF_SMARTPHONE_DEVEL_SPEC="HappyFaceSmartPhoneApp-devel.spec"
+
+
 #-----------------------------------------------
 # Usage
 #-----------------------------------------------
-projects="happyface atlas atlas-webservice extra redcomet gridengine"
+projects="happyface atlas atlas-webservice extra redcomet gridengine smartphone"
 usage="./rebuild.sh [project]
 
    project=$projects
@@ -117,6 +124,13 @@ case "$1" in
 	GIT=$HF_REDCOMET_GIT
 	GIT_BRANCH=$HF_REDCOMET_GIT_BRANCH
 	SPEC=$HF_GRIDENGINE_SPEC
+	;;
+
+    smartphone)
+	GIT_PROJECT=$HF_SMARTPHONE_DEVEL_PROJECT
+	GIT=$HF_SMARTPHONE_DEVEL_GIT
+	GIT_BRANCH=$HF_SMARTPHONE_DEVEL_GIT_BRANCH
+	SPEC=$HF_SMARTPHONE_DEVEL_SPEC
 	;;
     *)
 	exit 0
