@@ -1,36 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 #-----------------------------------------------
 # Consts
 #-----------------------------------------------
-
-## HappyFaceCore
-HF_PROJECT="HappyFaceCore"
-HF_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_PROJECT}/zip"
-HF_GIT_BRANCH="master"
-HF_SPEC="HappyFaceCore.spec"
-
-
-## HappyFaceATLASModules
-HF_ATLAS_MODULES_PROJECT="HappyFaceATLASModules"
-HF_ATLAS_MODULES_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_ATLAS_MODULES_PROJECT}/zip"
-HF_ATLAS_MODULES_GIT_BRANCH="master"
-HF_ATLAS_MODULES_SPEC="HappyFace-ATLAS.spec"
-
-
-## HappyFaceF Red-comet
-HF_GRIDENGINE_PROJECT="Red-Comet"
-HF_REDCOMET_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_GRIDENGINE_PROJECT}/zip"
-HF_REDCOMET_GIT_BRANCH="Zgok"
-HF_GRIDENGINE_SPEC="HappyFace-Grid-Engine.spec"
-
-
-## HappyFace SmartPhone Devel Env
-HF_SMARTPHONE_DEVEL_PROJECT="HappyFaceSmartPhoneApp"
-HF_SMARTPHONE_DEVEL_GIT="https://codeload.github.com/HappyFaceGoettingen/${HF_SMARTPHONE_DEVEL_PROJECT}/zip"
-HF_SMARTPHONE_DEVEL_GIT_BRANCH="master"
-HF_SMARTPHONE_DEVEL_SPEC="HappyFaceSmartPhoneApp-devel.spec"
-
+cd $(dirname $0)
+conf="rebuild.conf"
+[ ! -e $conf ] && echo "$conf does not exist!" && exit -1
+. $conf
 
 #-----------------------------------------------
 # Usage
@@ -65,13 +41,11 @@ dist=`uname -r | perl -pe "s/^.*\.(el[0-9])\..*$/\1/g"`
 case "$1" in
     happyface)
 	GIT_PROJECT=$HF_PROJECT
-	GIT=$HF_GIT
 	GIT_BRANCH=$HF_GIT_BRANCH
 	SPEC=$HF_SPEC
 	;;
     atlas)
 	GIT_PROJECT=$HF_ATLAS_MODULES_PROJECT
-	GIT=$HF_ATLAS_MODULES_GIT
 	GIT_BRANCH=$HF_ATLAS_MODULES_GIT_BRANCH
 	SPEC=$HF_ATLAS_MODULES_SPEC
 	;;
@@ -121,14 +95,12 @@ case "$1" in
 
     gridengine)
 	GIT_PROJECT=$HF_GRIDENGINE_PROJECT
-	GIT=$HF_REDCOMET_GIT
 	GIT_BRANCH=$HF_REDCOMET_GIT_BRANCH
 	SPEC=$HF_GRIDENGINE_SPEC
 	;;
 
     smartphone)
 	GIT_PROJECT=$HF_SMARTPHONE_DEVEL_PROJECT
-	GIT=$HF_SMARTPHONE_DEVEL_GIT
 	GIT_BRANCH=$HF_SMARTPHONE_DEVEL_GIT_BRANCH
 	SPEC=$HF_SMARTPHONE_DEVEL_SPEC
 	;;
@@ -141,9 +113,14 @@ esac
 
 echo "------------------- Source packaging -----------------------"
 cd SOURCES
+
+## Downloading zip archive
+GIT_ZIP="https://codeload.github.com/${GIT_GROUP}/${HF_PROJECT}/zip"
 rm -rvf ${GIT_PROJECT}-${GIT_BRANCH}
-wget $GIT/$GIT_BRANCH -O ${GIT_PROJECT}.zip
+wget $GIT_ZIP/$GIT_BRANCH -O ${GIT_PROJECT}.zip
 unzip ${GIT_PROJECT}.zip
+
+
 cd ..
 
 echo "-------------------- RPM packaging -------------------------"
