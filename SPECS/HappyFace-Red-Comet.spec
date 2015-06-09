@@ -1,12 +1,11 @@
 Summary: HappyFace-Red-Comet
 Name: HappyFace-Red-Comet
 Version: 3.0.0
-Release: 4
+Release: 5
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: https://ekptrac.physik.uni-karlsruhe.de/trac/HappyFace
-# svn co https://ekptrac.physik.uni-karlsruhe.de/public/HappyFace/branches/v3.0 HappyFace
-Source0: HappyFace-Red-Comet/red-comet-devel.tar.gz
+Source0: Red-Comet.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Requires: HappyFace = 3.0.0-1
 Requires: python >= 2.6
@@ -42,6 +41,9 @@ Requires: kdesdk
 # Preamble
 #
 # Macro definitions
+%define _branch_name    Zgok
+%define _source_dir     Red-Comet-%{_branch_name}
+
 %define _devel_dir	/var/lib/HappyFace3-devel
 
 %define happyface_uid	373
@@ -72,7 +74,7 @@ Third step: Create your Python project (for example, HappyFaceDev project)
 Report Bugs and Opinions to <gen.kawamura@cern.ch>
 
 %prep
-%setup -b 0 -q -n red-comet-devel
+%setup0 -q -n %{_source_dir}
 
 %build
 #make
@@ -85,9 +87,14 @@ cd ..
 # make directories
 ! [ -d $RPM_BUILD_ROOT/%{_devel_dir} ] && mkdir -p $RPM_BUILD_ROOT/%{_devel_dir}
 
+
+# rm .svn in devel dir
+find %{_source_dir} -type f | grep .svn | xargs -I {} rm -vf {}
+find %{_source_dir} -type d | grep .svn | sort -r | xargs -I {} rmdir -v {}
+
 # copy files
-cp -v red-comet-devel/*.sh $RPM_BUILD_ROOT/%{_devel_dir}
-cp -v red-comet-devel/README.txt $RPM_BUILD_ROOT/%{_devel_dir}
+cp -v %{_source_dir}/devel-env/*.sh $RPM_BUILD_ROOT/%{_devel_dir}
+cp -v %{_source_dir}/devel-env/README.txt $RPM_BUILD_ROOT/%{_devel_dir}
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
@@ -113,6 +120,8 @@ service httpd start
 %{_devel_dir}/README.txt
 
 %changelog
+* Tue Jun 09 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-5
+- Integrated with integration-server
 * Fri Mar 06 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-4
 - Sprint Zgok env
 * Thu Aug 18 2014 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-3

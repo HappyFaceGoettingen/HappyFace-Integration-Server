@@ -72,30 +72,14 @@ case "$1" in
 	exit 0
 	;;
     redcomet)
-	echo "------------------- Source packaging -----------------------"
-	cd SOURCES/HappyFace-Red-Comet
-
-	if [ -e /var/lib/HappyFace3-devel ]; then
-	    rm -rv red-comet-devel
-	    [ ! -e red-comet-devel ] && mkdir -pv red-comet-devel
-	    cp -v /var/lib/HappyFace3-devel/*.sh red-comet-devel/
-	    cp -v /var/lib/HappyFace3-devel/README.txt red-comet-devel/
-	    tar czvf red-comet-devel.tar.gz red-comet-devel
-	fi
-
-	cd ..
-	cp -v HappyFace-Red-Comet/red-comet-devel.tar.gz .
-	cd ..
-
-	echo "-------------------- RPM packaging -------------------------"
-	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace-Red-Comet.spec
-	rm -rvf BUILD BUILDROOT	
-	exit 0
+	GIT_PROJECT=$HF_REDCOMET_PROJECT
+	GIT_BRANCH=$HF_REDCOMET_GIT_BRANCH
+	SPEC=$HF_REDCOMET_SPEC
 	;;
 
     gridengine)
 	GIT_PROJECT=$HF_GRIDENGINE_PROJECT
-	GIT_BRANCH=$HF_REDCOMET_GIT_BRANCH
+	GIT_BRANCH=$HF_GRIDENGINE_GIT_BRANCH
 	SPEC=$HF_GRIDENGINE_SPEC
 	;;
 
@@ -115,7 +99,7 @@ echo "------------------- Source packaging -----------------------"
 cd SOURCES
 
 ## Downloading zip archive
-GIT_ZIP="https://codeload.github.com/${GIT_GROUP}/${HF_PROJECT}/zip"
+GIT_ZIP="https://codeload.github.com/${GIT_GROUP}/${GIT_PROJECT}/zip"
 rm -rvf ${GIT_PROJECT}-${GIT_BRANCH}
 wget $GIT_ZIP/$GIT_BRANCH -O ${GIT_PROJECT}.zip
 unzip ${GIT_PROJECT}.zip
