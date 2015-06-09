@@ -38,7 +38,7 @@ HF_SMARTPHONE_DEVEL_SPEC="HappyFaceSmartPhoneApp-devel.spec"
 projects="happyface atlas atlas-webservice extra redcomet gridengine smartphone"
 usage="./rebuild.sh [project]
 
-   project=$projects
+   project=\"$projects\"
 "
 
 
