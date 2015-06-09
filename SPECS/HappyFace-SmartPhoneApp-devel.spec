@@ -1,11 +1,11 @@
-Summary: HappyFace-ATLAS
+Summary: HappyFace-SmartPhoneApp-devel
 Name: HappyFace-SmartPhoneApp-devel
-Version: 3.0.0
+Version: 0.0.1
 Release: 20150609
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: http://nagios-goegrid.gwdg.de/category
-Source0: HappySmartPhoneApp.zip
+Source0: HappyFaceSmartPhoneApp.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Requires: npm
 Requires: nodejs
@@ -56,7 +56,7 @@ cd ..
 # Generating environments
 
 
-cp -vr %{_source_dir}/modules $RPM_BUILD_ROOT/%{_prefix}
+cp -vr %{_source_dir}/www $RPM_BUILD_ROOT/%{_prefix}
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
@@ -77,17 +77,5 @@ source %{_profile_dir}/android_sdk.sh
 
 
 %changelog
-* Wed Jun 03 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20150603
-- integrated with integration-server
-* Mon May 12 2014 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20140512
-- modified category name and module config according to O/R schema relationships
-* Tue Mar 03 2014 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-04032014
-- decomissioned ganglia and moved it to ATLAS-internal-resource rpm
-- upgraded Panda module
-* Mon Mar 03 2014 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-03032014
-- decomissioned webservice and moved it to ATLAS-webservice rpm
-* Wed Dec 18 2013 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-18122013
-- quasi-stable version
-
-* Fri Jul 19 2013 Gen Kawamura <Gen.Kawamura@cern.ch> and Christian Wehrberger <cgwehrberger@gmail.com> 3.0.0-16072013
+* Tue Jul 09 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 0.0.1-20150609
 - initial packaging
