@@ -20,7 +20,7 @@ Requires: ant-apache-regexp
 # Preamble
 #
 # Macro definitions
-%define _branch_name    master
+%define _branch_name    201507
 %define _source_dir     HappyFaceSmartPhoneApp-%{_branch_name}
 
 
@@ -38,8 +38,7 @@ HappyFace is a powerful site specific monitoring system for data from multiple i
 
 
 %prep
-%setup0 -q -n %{_source_dir}
-
+%setup -q -n %{_source_dir}
 
 %build
 #make
@@ -51,12 +50,13 @@ cd ..
 
 # make directories
 ! [ -d $RPM_BUILD_ROOT/%{_prefix} ] && mkdir -vp $RPM_BUILD_ROOT/%{_prefix}
+! [ -d $RPM_BUILD_ROOT/%{_profile_dir} ] && mkdir -vp $RPM_BUILD_ROOT/%{_profile_dir}
 
 
 # Generating environments
-
-
 cp -vr %{_source_dir}/www $RPM_BUILD_ROOT/%{_prefix}
+cp -v %{_source_dir}/linux-devel-env/android_sdk.sh $RPM_BUILD_ROOT/%{_profile_dir}/
+
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
@@ -64,6 +64,17 @@ cp -vr %{_source_dir}/www $RPM_BUILD_ROOT/%{_prefix}
 %pre
 npm install -g cordova
 npm install -g ionic
+
+ANT="http://apache.lauf-forum.at//ant/binaries/apache-ant-1.9.5-bin.zip"
+ADT="https://dl.google.com/android/adt/adt-bundle-linux-x86_64-20140702.zip"
+[ ! -e /tmp/$(basename $ANT) ] && wget "$ANT" -O /tmp/$(basename $ANT)
+[ ! -e /tmp/$(basename $ADT) ] && wget "$ADT" -O /tmp/$(basename $ADT)
+
+unzip /tmp/$(basename $ANT) -d /usr/local
+unzip /tmp/$(basename $ADT) -d /usr/local
+
+ln -s /usr/local/apache-ant-1.9.5 /usr/local/apache-ant
+ln -s /usr/local/adt-bundle-linux-x86_64-20140702 /usr/local/android
 
 
 %post
@@ -74,6 +85,7 @@ source %{_profile_dir}/android_sdk.sh
 %files
 %defattr(-,%{happyface_user},%{happyface_group})
 %{_prefix}
+%{_profile_dir}
 
 
 %changelog
