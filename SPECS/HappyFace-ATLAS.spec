@@ -18,7 +18,7 @@ Requires: python-matplotlib
 # Preamble
 #
 # Macro definitions
-%define _branch_name    master
+%define _branch_name  master
 %define _source_dir     HappyFaceATLASModules-%{_branch_name}
 
 

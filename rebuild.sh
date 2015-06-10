@@ -108,6 +108,8 @@ unzip ${GIT_PROJECT}.zip
 cd ..
 
 echo "-------------------- RPM packaging -------------------------"
+sed -e "s/^%define _branch_name.*/%define _branch_name  ${GIT_BRANCH}/g" -i SPECS/$SPEC 
+
 rpmbuild --define 'dist .${dist}' --clean -ba SPECS/$SPEC
 rm -rvf BUILD BUILDROOT	
 

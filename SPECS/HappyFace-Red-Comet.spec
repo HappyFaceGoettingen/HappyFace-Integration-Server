@@ -41,7 +41,7 @@ Requires: kdesdk
 # Preamble
 #
 # Macro definitions
-%define _branch_name    Zgok
+%define _branch_name  Zgok
 %define _source_dir     Red-Comet-%{_branch_name}
 
 %define _devel_dir	/var/lib/HappyFace3-devel
