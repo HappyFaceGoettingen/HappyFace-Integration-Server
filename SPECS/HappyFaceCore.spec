@@ -30,7 +30,7 @@ Requires: sqlite
 # Preamble
 #
 # Macro definitions
-%define _branch_name    master
+%define _branch_name  master
 %define _source_dir     HappyFaceCore-%{_branch_name}
 
 %define _prefix         /var/lib

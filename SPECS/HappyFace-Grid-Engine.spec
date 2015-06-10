@@ -40,7 +40,7 @@ Requires: rpmforge-release
 # Preamble
 #
 # Macro definitions
-%define _branch_name    Zgok
+%define _branch_name  Zgok
 %define _source_dir     Red-Comet-%{_branch_name}
 
 %define _prefix         /var/lib/HappyFace3
@@ -116,7 +116,7 @@ cd ..
 ! [ -d $RPM_BUILD_ROOT/%{_defaultconfig} ] && mkdir -vp $RPM_BUILD_ROOT/%{_defaultconfig}
 ! [ -d $RPM_BUILD_ROOT/%{_sysconf_dir} ] && mkdir -p $RPM_BUILD_ROOT/%{_sysconf_dir}
 ! [ -d $RPM_BUILD_ROOT/%{_prefix}/static/images ] && mkdir -vp $RPM_BUILD_ROOT/%{_prefix}/static/images
-! [ -d $RPM_BUILD_ROOT/%{_prefix}/static/css ] && mkdir -vp $RPM_BUILD_ROOT/%{_prefix}/static/csss
+! [ -d $RPM_BUILD_ROOT/%{_prefix}/static/css ] && mkdir -vp $RPM_BUILD_ROOT/%{_prefix}/static/css
 
 
 # rm .svn in devel dir
@@ -137,11 +137,11 @@ cp -vr %{_source_dir}/grid_enabled_acquire.py $RPM_BUILD_ROOT/%{_prefix}
 
 # style sheets
 cp -v %{_source_dir}/static/tooltip.png  $RPM_BUILD_ROOT/%{_prefix}/static/images  
-cp -v %{_source_dir}/static/hf.css  $RPM_BUILD_ROOT/%{_prefix}/static/css
+cp -v %{_source_dir}/static/hf.css  $RPM_BUILD_ROOT/%{_prefix}/static/css/hf.css.new
 
 
 # defaultconfig
-cp -v %{_source_dir}/defaultconfig/happyface.cfg $RPM_BUILD_ROOT/%{_defaultconfig}/
+cp -v %{_source_dir}/defaultconfig/happyface.cfg $RPM_BUILD_ROOT/%{_defaultconfig}/happyface.cfg.new
 
 
 %clean
@@ -150,6 +150,11 @@ cp -v %{_source_dir}/defaultconfig/happyface.cfg $RPM_BUILD_ROOT/%{_defaultconfi
 
 %post
 mv -v %{_defaultconfig}/happyface.cfg %{_defaultconfig}/happyface.cfg.org
+mv -v %{_defaultconfig}/happyface.new %{_defaultconfig}/happyface.cfg
+
+mv -v %{_prefix}/static/css/hf.css %{_prefix}/static/css/hf.css.org
+mv -v %{_prefix}/static/css/hf.css.new %{_prefix}/static/css/hf.css
+
 
 ## making default categories disabled
 ! [ -e %{_module_dis_cfg} ] && mkdir -v %{_module_dis_cfg}
@@ -186,6 +191,8 @@ service httpd stop
 
 %postun
 mv -v %{_defaultconfig}/happyface.cfg.org %{_defaultconfig}/happyface.cfg
+mv -v %{_prefix}/static/css/hf.css.org %{_prefix}/static/css/hf.css
+
 service httpd start
 
 
@@ -198,7 +205,7 @@ service httpd start
 %{_prefix}/grid_enabled_acquire.py*
 %{_prefix}/static/images
 %{_prefix}/static/css
-%{_defaultconfig}/happyface.cfg
+%{_defaultconfig}
 %{_category_cfg}
 %{_module_cfg}
 

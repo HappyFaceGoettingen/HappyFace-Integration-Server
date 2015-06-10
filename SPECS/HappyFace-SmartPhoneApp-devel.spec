@@ -20,7 +20,7 @@ Requires: ant-apache-regexp
 # Preamble
 #
 # Macro definitions
-%define _branch_name    201507
+%define _branch_name  201507
 %define _source_dir     HappyFaceSmartPhoneApp-%{_branch_name}
 
 
