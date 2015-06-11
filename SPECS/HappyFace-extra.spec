@@ -1,13 +1,13 @@
-Summary: HappyFace-ATLAS-internal-resource
-Name: HappyFace-ATLAS-internal-resource
+Summary: HappyFace-extra
+Name: HappyFace-extra
 Version: 3.0.0
-Release: 20140304
+Release: 20150611
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: http://nagios-goegrid.gwdg.de/category
-Source0: %{name}_modules-%{version}.tar.gz
+Source0: HappyFaceExtra.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-Requires: HappyFace = 3.0.0-1
+Requires: HappyFaceCore = 3.0.0-2
 Requires: MySQL-python
 
 
@@ -17,6 +17,9 @@ Requires: MySQL-python
 # Preamble
 #
 # Macro definitions
+%define _branch_name  master
+%define _source_dir     HappyFaceExtra-%{_branch_name}
+
 %define _prefix         /var/lib/HappyFace3
 %define _category_cfg   %{_prefix}/config/categories-enabled
 %define _module_cfg     %{_prefix}/config/modules-enabled
@@ -36,7 +39,7 @@ HappyFace is a powerful site specific monitoring system for data from multiple i
 
 
 %prep
-%setup -b 0 -q -n %{name}_modules
+%setup -q -n %{_source_dir}
 
 
 %build
@@ -52,9 +55,9 @@ cd ..
 ! [ -d $RPM_BUILD_ROOT/%{_prefix}/config ] && mkdir -p $RPM_BUILD_ROOT/%{_prefix}/config
 
 # copy files
-cp -vr %{name}_modules/modules $RPM_BUILD_ROOT/%{_prefix}
-cp -vr %{name}_modules/config/modules-enabled $RPM_BUILD_ROOT/%{_prefix}/config
-cp -vr %{name}_modules/config/categories-enabled $RPM_BUILD_ROOT/%{_prefix}/config
+cp -vr %{_source_dir}/modules $RPM_BUILD_ROOT/%{_prefix}
+cp -vr %{_source_dir}/config/modules-enabled $RPM_BUILD_ROOT/%{_prefix}/config
+cp -vr %{_source_dir}/config/categories-enabled $RPM_BUILD_ROOT/%{_prefix}/config
 
 
 %clean
@@ -100,6 +103,8 @@ service httpd start
 
 
 %changelog
+* Tue Mar 03 2014 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20150611
+- Integrated with integration-server
 * Tue Mar 03 2014 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-04032014
 - added Ganglia module and changed name of package from "ATLAS-devel" to "ATLAS-internal-resource"
 * Thu Jan 16 2014 Gen Kawamura <Gen.Kawamura@cern.ch> and Eric Buschmann <eric.buschmann1@stud.uni-goettingen.de> 3.0.0-1

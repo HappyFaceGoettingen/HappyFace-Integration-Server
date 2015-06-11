@@ -50,15 +50,9 @@ case "$1" in
 	SPEC=$HF_ATLAS_MODULES_SPEC
 	;;
     extra)
-	echo "------------------- Source packaging -----------------------"
-	cd SOURCES
-	tar czvf HappyFace-ATLAS-internal-resource_modules-3.0.0.tar.gz HappyFace-ATLAS-internal-resource_modules
-	cd ..
-
-	echo "-------------------- RPM packaging -------------------------"
-	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace-ATLAS-internal-resource.spec
-	rm -rvf BUILD BUILDROOT
-	exit 0
+	GIT_PROJECT=$HF_EXTRA_PROJECT
+	GIT_BRANCH=$HF_EXTRA_GIT_BRANCH
+	SPEC=$HF_EXTRA_SPEC
 	;;
     webservice)
 	GIT_PROJECT=$HF_WEBSERVICE_PROJECT
