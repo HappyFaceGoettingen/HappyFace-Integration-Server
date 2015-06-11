@@ -1,14 +1,13 @@
-Summary: HappyFace-ATLAS-webservice
-Name: HappyFace-ATLAS-webservice
+Summary: HappyFace-Webservice
+Name: HappyFace-Webservice
 Version: 3.0.0
-Release: 20140512
+Release: 20150611
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: http://nagios-goegrid.gwdg.de/category
-Source0: %{name}-%{version}.tar.gz
-Source1: happyface3-webservice.conf
+Source0: HappyFaceWebService.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-Requires: HappyFace = 3.0.0-1
+Requires: HappyFaceCore = 3.0.0-2
 
 
 
@@ -18,6 +17,9 @@ Requires: HappyFace = 3.0.0-1
 # Preamble
 #
 # Macro definitions
+%define _branch_name  master
+%define _source_dir     HappyFaceWebService-%{_branch_name}
+
 %define _prefix         /var/lib/HappyFace3
 %define _sysconf_dir    /etc/httpd/conf.d
 %define _category_cfg   %{_prefix}/config/categories-enabled
@@ -40,7 +42,8 @@ HappyFace is a powerful site specific monitoring system for data from multiple i
 
 
 %prep
-%setup -b 0 -q -n %{name}
+%setup -q -n %{_source_dir}
+
 
 %build
 #make
@@ -56,34 +59,34 @@ cd ..
 ! [ -d $RPM_BUILD_ROOT/%{_sysconf_dir} ] && mkdir -p $RPM_BUILD_ROOT/%{_sysconf_dir}
 
 # copy files
-cp -vr %{name}/webservice $RPM_BUILD_ROOT/%{_prefix}/webservice
+cp -vr %{_source_dir}/webservice $RPM_BUILD_ROOT/%{_prefix}/webservice
 chmod 775 $RPM_BUILD_ROOT/%{_prefix}/webservice
-cp -vr %{name}/modules $RPM_BUILD_ROOT/%{_prefix}
-cp -vr %{name}/config/modules-enabled $RPM_BUILD_ROOT/%{_prefix}/config
-cp -vr %{name}/config/categories-enabled $RPM_BUILD_ROOT/%{_prefix}/config
-cp -v %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconf_dir}
+cp -vr %{_source_dir}/modules $RPM_BUILD_ROOT/%{_prefix}
+cp -vr %{_source_dir}/config/modules-enabled $RPM_BUILD_ROOT/%{_prefix}/config
+cp -vr %{_source_dir}/config/categories-enabled $RPM_BUILD_ROOT/%{_prefix}/config
+cp -v %{_source_dir}/happyface3-webservice.conf $RPM_BUILD_ROOT/%{_sysconf_dir}
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 %pre
-## making default categories disabled
-#! [ -e %{_module_dis_cfg} ] && mkdir -v %{_module_dis_cfg}
-#! [ -e %{_category_dis_cfg} ] && mkdir -v %{_category_dis_cfg}
-
-## disabling default categories
-#[ -e %{_category_cfg}/batch_system.cfg ] && mv -v %{_category_cfg}/batch_system.cfg %{_category_dis_cfg}
-#[ -e %{_category_cfg}/infrastructure.cfg ] && mv -v %{_category_cfg}/infrastructure.cfg %{_category_dis_cfg}
-#[ -e %{_category_cfg}/phedex_prod.cfg ] && mv -v %{_category_cfg}/phedex_prod.cfg %{_category_dis_cfg}
-
-## disabling default modules
-#[ -e %{_module_cfg}/batch_system.cfg ] && mv -v %{_module_cfg}/batch_system.cfg %{_module_dis_cfg}
-#[ -e %{_module_cfg}/phedex_prod.cfg ] && mv -v %{_module_cfg}/phedex_prod.cfg %{_module_dis_cfg}
-#[ -e %{_module_cfg}/uschi_basic_dcap.cfg ] && mv -v %{_module_cfg}/uschi_*.cfg %{_module_dis_cfg}
-
+service httpd stop
 
 %post
-service httpd restart
+## making default categories disabled
+! [ -e %{_module_dis_cfg} ] && mkdir -v %{_module_dis_cfg}
+! [ -e %{_category_dis_cfg} ] && mkdir -v %{_category_dis_cfg}
+
+## disabling default categories
+[ -e %{_category_cfg}/batch_system.cfg ] && mv -v %{_category_cfg}/batch_system.cfg %{_category_dis_cfg}
+[ -e %{_category_cfg}/infrastructure.cfg ] && mv -v %{_category_cfg}/infrastructure.cfg %{_category_dis_cfg}
+[ -e %{_category_cfg}/phedex_prod.cfg ] && mv -v %{_category_cfg}/phedex_prod.cfg %{_category_dis_cfg}
+
+## disabling default modules
+[ -e %{_module_cfg}/batch_system.cfg ] && mv -v %{_module_cfg}/batch_system.cfg %{_module_dis_cfg}
+[ -e %{_module_cfg}/phedex_prod.cfg ] && mv -v %{_module_cfg}/phedex_prod.cfg %{_module_dis_cfg}
+[ -e %{_module_cfg}/uschi_basic_dcap.cfg ] && mv -v %{_module_cfg}/uschi_*.cfg %{_module_dis_cfg}
+
 
 echo "------------------------------------"
 ls %{_prefix}/*
@@ -97,6 +100,7 @@ cd %{_prefix}
 su %{happyface_user} -c "python acquire.py"
 echo "------------------------------------"
 
+service httpd strat
 
 %preun
 service httpd stop
@@ -117,7 +121,9 @@ service httpd start
 
 
 %changelog
-* Mon May 12 2013 Gen Kawamura <Gen.Kawamura@cern.ch> and Haykuhi Musheghyan <m.haykuhi@gmail.com> 3.0.0-20140512
+* Thu Jun 11 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20150611
+- Changed package name to HappyFace-Webservice. Integrated with integration-server.
+* Mon May 12 2014 Gen Kawamura <Gen.Kawamura@cern.ch> and Haykuhi Musheghyan <m.haykuhi@gmail.com> 3.0.0-20140512
 - added db_table_list.py
 * Thu Apr 04 2013 Gen Kawamura <Gen.Kawamura@cern.ch> and Haykuhi Musheghyan <m.haykuhi@gmail.com> 3.0.0-20140403
 - fixed a bug in the pre section again, by uncomment

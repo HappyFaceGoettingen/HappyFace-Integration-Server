@@ -1,13 +1,13 @@
 Summary: HappyFace-Red-Comet
 Name: HappyFace-Red-Comet
 Version: 3.0.0
-Release: 5
+Release: 20150611
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: https://ekptrac.physik.uni-karlsruhe.de/trac/HappyFace
 Source0: Red-Comet.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-Requires: HappyFace = 3.0.0-1
+Requires: HappyFaceCore = 3.0.0-2
 Requires: python >= 2.6
 Requires: httpd >= 2.0
 Requires: python-cherrypy >= 3.0
@@ -120,7 +120,7 @@ service httpd start
 %{_devel_dir}/README.txt
 
 %changelog
-* Tue Jun 09 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-5
+* Tue Jun 09 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20150611
 - Integrated with integration-server
 * Fri Mar 06 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-4
 - Sprint Zgok env

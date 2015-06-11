@@ -1,7 +1,7 @@
 Summary: HappyFace-SmartPhoneApp-devel
 Name: HappyFace-SmartPhoneApp-devel
 Version: 0.0.1
-Release: 20150609
+Release: 20150611
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: http://nagios-goegrid.gwdg.de/category
@@ -89,5 +89,5 @@ source %{_profile_dir}/android_sdk.sh
 
 
 %changelog
-* Tue Jul 09 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 0.0.1-20150609
+* Tue Jul 09 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 0.0.1-20150611
 - initial packaging

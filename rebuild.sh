@@ -11,7 +11,7 @@ conf="rebuild.conf"
 #-----------------------------------------------
 # Usage
 #-----------------------------------------------
-projects="happyface atlas atlas-webservice extra redcomet gridengine smartphone"
+projects="happyface atlas webservice extra redcomet gridengine smartphone"
 usage="./rebuild.sh [project]
 
    project=\"$projects\"
@@ -60,16 +60,10 @@ case "$1" in
 	rm -rvf BUILD BUILDROOT
 	exit 0
 	;;
-    atlas-webservice)
-	echo "------------------- Source packaging -----------------------"
-	cd SOURCES
-	tar czvf HappyFace-ATLAS-webservice-3.0.0.tar.gz HappyFace-ATLAS-webservice
-	cd ..
-
-	echo "-------------------- RPM packaging -------------------------"
-	rpmbuild --define 'dist .${dist}' --clean -ba SPECS/HappyFace-ATLAS-webservice.spec
-	rm -rvf BUILD BUILDROOT
-	exit 0
+    webservice)
+	GIT_PROJECT=$HF_WEBSERVICE_PROJECT
+	GIT_BRANCH=$HF_WEBSERVICE_GIT_BRANCH
+	SPEC=$HF_WEBSERVICE_SPEC
 	;;
     redcomet)
 	GIT_PROJECT=$HF_REDCOMET_PROJECT

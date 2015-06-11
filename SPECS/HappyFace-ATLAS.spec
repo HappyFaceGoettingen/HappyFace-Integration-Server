@@ -1,7 +1,7 @@
 Summary: HappyFace-ATLAS
 Name: HappyFace-ATLAS
 Version: 3.0.0
-Release: 20150603
+Release: 20150611
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: http://nagios-goegrid.gwdg.de/category
@@ -104,7 +104,7 @@ service httpd start
 
 
 %changelog
-* Wed Jun 03 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20150603
+* Wed Jun 03 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20150611
 - integrated with integration-server
 * Mon May 12 2014 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20140512
 - modified category name and module config according to O/R schema relationships

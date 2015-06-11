@@ -1,7 +1,7 @@
 Summary: HappyFace-Grid-Engine
 Name: HappyFace-Grid-Engine
 Version: 3.0.0
-Release: 4
+Release: 20150611
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: https://ekptrac.physik.uni-karlsruhe.de/trac/HappyFace
@@ -212,7 +212,7 @@ service httpd start
 
 
 %changelog
-* Wed Jun 03 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-4
+* Wed Jun 03 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20150611
 - integrated with integration-server
 * Tue May 19 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-3
 - build sprint-4 Zgok
