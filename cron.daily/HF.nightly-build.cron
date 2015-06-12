@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. /etc/profile
+
+/var/lib/HappyFace-Integration-Server/nightly-build.sh -r -e

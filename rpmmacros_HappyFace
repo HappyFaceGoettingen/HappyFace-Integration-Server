@@ -1,1 +1,2 @@
 %_topdir        /a/home/local/gen/var/grid-rpm/HappyFace-Integration-Server
+%debug_package %{nil}

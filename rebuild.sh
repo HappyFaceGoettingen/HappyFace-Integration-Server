@@ -27,7 +27,8 @@ fi
 #---------------------------------------------
 # Environments
 #---------------------------------------------
-echo "%_topdir        $PWD" > rpmmacros_HappyFace
+echo "%_topdir        $PWD
+%debug_package %{nil}" > rpmmacros_HappyFace
 ln -sf $PWD/rpmmacros_HappyFace ~/.rpmmacros
 
 
