@@ -87,7 +87,7 @@ build_rpm 2>&1 | tee $LOG_DIR/build.log
 #--------------------------------------------------------
 # Remove HappyFace instance
 #--------------------------------------------------------
-yum -y remove $HF_PACKAGES 2>&1 | tee $LOG_DIR/remove.log
+yum -y remove HappyFaceCore 2>&1 | tee $LOG_DIR/remove.log
 rm -rvf /var/lib/HappyFace3  2>&1 | tee -a $LOG_DIR/remove.log
 
 #--------------------------------------------------------
