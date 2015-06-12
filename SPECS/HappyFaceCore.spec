@@ -22,6 +22,7 @@ Requires: python-lxml
 Requires: numpy
 Requires: mod_wsgi
 Requires: sqlite
+Requires: rpmforge-release
 
 
 ######################################################################

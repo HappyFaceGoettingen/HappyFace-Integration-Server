@@ -1,6 +1,12 @@
 #!/bin/bash
 
 MY_SCRIPT_DIR=$(dirname $0)
+cd $MY_SCRIPT_DIR
+
+conf=nightly-build.conf
+[ ! -e $conf ] && echo "no conf [$conf] file!" && exit -1
+source $conf
+
 
 usage="$0 [option]
 
@@ -60,19 +66,13 @@ setup_HF_grid_env(){
 
 
 run_HF(){
-    su happyface3 -c "cd /var/lib/HappyFace3; python $ACQUIRE_SCRIPT"
+    su happyface3 -c "cd /var/lib/HappyFace3; python $HF_ACQUIRE_SCRIPT"
 }
 
 
 #-------------------------------------------------------
 # Make build env and Remove old RPMS
 #-------------------------------------------------------
-cd $MY_SCRIPT_DIR
-
-conf=nightly-build.conf
-[ ! -e $conf ] && echo "no conf [$conf] file!" && exit -1
-source $conf
-
 [ -e RPMS ] && rm -rvf RPMS
 [ ! -e $LOG_DIR ] && mkdir -v $LOG_DIR
 
