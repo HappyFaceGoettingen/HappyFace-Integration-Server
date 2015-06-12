@@ -1,4 +1,4 @@
-#--------------------------------------------------------
+B1;2601;0c#--------------------------------------------------------
 # HappyFace integration and nightly build server
 #--------------------------------------------------------
 
@@ -9,21 +9,23 @@ These scripts,
 
 
 can generate an automatic HF integration and deployment server. 
-Just apply the scripts to the server as follows,
+Just clone git repo and apply a cron script to the server as follows,
 
      cd /var/lib
-     git clone 
+     git clone https://github.com/HappyFaceGoettingen/HappyFace-Integration-Server
      cd HappyFace-Integration-Server
      cp -v cron.daily/HF.nightly-build.cron /etc/cron.daily
 
 
-The scripts will try a sequencial procedure of checking GitHub, packaging RPM, 
-removing old env, deplying new HF, and running acquire.py 
+The scripts will try a sequencial procedure of packaging RPM, 
+removing old env, deplying new HF, and running acquire.py.
+The nightly-build.sh is configured by "nightly-build.conf".
 
 As for your initial test, just run the script as follows.
 
    cd /var/lib/HappyFace-Integration-Server
    ./nightly-build.sh -r
+
 
 
 
