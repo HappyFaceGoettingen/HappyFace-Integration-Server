@@ -150,7 +150,7 @@ cp -v %{_source_dir}/defaultconfig/happyface.cfg $RPM_BUILD_ROOT/%{_defaultconfi
 
 %post
 mv -v %{_defaultconfig}/happyface.cfg %{_defaultconfig}/happyface.cfg.org
-mv -v %{_defaultconfig}/happyface.cft.new %{_defaultconfig}/happyface.cfg
+mv -v %{_defaultconfig}/happyface.cfg.new %{_defaultconfig}/happyface.cfg
 
 mv -v %{_prefix}/static/css/hf.css %{_prefix}/static/css/hf.css.org
 mv -v %{_prefix}/static/css/hf.css.new %{_prefix}/static/css/hf.css
