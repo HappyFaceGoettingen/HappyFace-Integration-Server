@@ -41,8 +41,8 @@ The nightly-build.sh is configured by "nightly-build.conf".
 
 As for your initial test, just run the script as follows.
 
-   cd /var/lib/HappyFace-Integration-Server
-   ./nightly-build.sh -r
+     cd /var/lib/HappyFace-Integration-Server
+     ./nightly-build.sh -r
 
 
 
@@ -54,19 +54,19 @@ As for your initial test, just run the script as follows.
 A location of grid user key is "/var/lib/HappyFace-Integration-Server/cert". You must prepare a grid user key and cert pair.
 
   1. generate user certificate
-  openssl pkcs12 -clcerts -nokeys -in usercert.p12 -out usercert.pem
+     openssl pkcs12 -clcerts -nokeys -in usercert.p12 -out usercert.pem
 
   2. create a private certficate with passphrase
-  openssl pkcs12 -nocerts -in usercert.p12 -out userkey.pem
+     openssl pkcs12 -nocerts -in usercert.p12 -out userkey.pem
 
   3. create a private certificate without passphrase
-  openssl rsa -in userkey.pem -out userkey.nopass.pem
+     openssl rsa -in userkey.pem -out userkey.nopass.pem
 
   4. change permissions
-  chmod 400 userkey.nopass.pem
-  chmod 644 usercert.pem
+     chmod 400 userkey.nopass.pem
+     chmod 644 usercert.pem
 
   5. copy grid user cert.
-  cp -v userkey.nopass.pem /var/lib/HappyFace-Integration-Server/cert
-  cp -v usercert.pem /var/lib/HappyFace-Integration-Server/cert
+     cp -v userkey.nopass.pem /var/lib/HappyFace-Integration-Server/cert
+     cp -v usercert.pem /var/lib/HappyFace-Integration-Server/cert
 
