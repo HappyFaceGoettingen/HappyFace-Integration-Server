@@ -120,10 +120,10 @@ time setup_HF_grid_env 2>&1 | tee $LOG_DIR/deploy_env.log
 #--------------------------------------------------------
 # Run
 #--------------------------------------------------------
-if [ -z "CERT_CHECK" ]; then
-    time run_HF 2>&1 | tee $LOG_DIR/run.log
-else
+if [ "$CERT_CHECK" == "yes" ]; then
     [ -e /var/lib/HappyFace3/cert/userkey.pem ] && time run_HF 2>&1 | tee $LOG_DIR/run.log
+else
+    time run_HF 2>&1 | tee $LOG_DIR/run.log
 fi
 
 
