@@ -89,18 +89,10 @@ service httpd stop
 
 
 echo "------------------------------------"
-ls %{_prefix}/*
-echo "------------------------------------"
 ls %{_prefix}/webservice/*
 echo "------------------------------------"
 
-echo "------------------------------------"
-echo "Populating default Happy Face database ..."
-cd %{_prefix}
-su %{happyface_user} -c "python acquire.py"
-echo "------------------------------------"
-
-service httpd strat
+service httpd start
 
 %preun
 service httpd stop
