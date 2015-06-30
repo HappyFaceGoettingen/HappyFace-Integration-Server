@@ -70,11 +70,9 @@ ADT="https://dl.google.com/android/adt/adt-bundle-linux-x86_64-20140702.zip"
 [ ! -e /tmp/$(basename $ANT) ] && wget "$ANT" -O /tmp/$(basename $ANT)
 [ ! -e /tmp/$(basename $ADT) ] && wget "$ADT" -O /tmp/$(basename $ADT)
 
-unzip /tmp/$(basename $ANT) -d /usr/local
-unzip /tmp/$(basename $ADT) -d /usr/local
+[ ! -e /usr/local/apache-ant ] && unzip /tmp/$(basename $ANT) -d /usr/local && ln -s /usr/local/apache-ant-1.9.5 /usr/local/apache-ant
+[ ! -e /usr/local/android ] && unzip /tmp/$(basename $ADT) -d /usr/local && ln -s /usr/local/adt-bundle-linux-x86_64-20140702 /usr/local/android
 
-ln -s /usr/local/apache-ant-1.9.5 /usr/local/apache-ant
-ln -s /usr/local/adt-bundle-linux-x86_64-20140702 /usr/local/android
 
 
 %post

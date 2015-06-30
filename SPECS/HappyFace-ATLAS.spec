@@ -18,7 +18,7 @@ Requires: python-matplotlib
 # Preamble
 #
 # Macro definitions
-%define _branch_name  master
+%define _branch_name  Lino201506
 %define _source_dir     HappyFaceATLASModules-%{_branch_name}
 
 
@@ -60,6 +60,7 @@ cd ..
 cp -vr %{_source_dir}/modules $RPM_BUILD_ROOT/%{_prefix}
 cp -vr %{_source_dir}/config/modules-enabled/* $RPM_BUILD_ROOT/%{_module_cfg}
 cp -vr %{_source_dir}/config/categories-enabled/* $RPM_BUILD_ROOT/%{_category_cfg}
+cp -vr %{_source_dir}/modified_core_system $RPM_BUILD_ROOT/%{_prefix}
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
@@ -68,6 +69,12 @@ cp -vr %{_source_dir}/config/categories-enabled/* $RPM_BUILD_ROOT/%{_category_cf
 service httpd stop
 
 %post
+echo "Deploying modified core system ...."
+mkdir -v %{_prefix}/modified_core_system/original_code
+mv -v %{_prefix}/hf/downloadservice.* %{_prefix}/modified_core_system/original_code
+ln -s %{_prefix}/modified_core_system/downloadservice.py %{_prefix}/hf/
+
+
 ## making default categories disabled
 ! [ -e %{_module_dis_cfg} ] && mkdir -v %{_module_dis_cfg}
 ! [ -e %{_category_dis_cfg} ] && mkdir -v %{_category_dis_cfg}
@@ -101,6 +108,8 @@ service httpd start
 %files
 %defattr(-,%{happyface_user},%{happyface_group})
 %{_prefix}
+%{_prefix}/modified_core_system/*
+
 
 
 %changelog
