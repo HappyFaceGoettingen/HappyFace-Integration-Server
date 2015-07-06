@@ -62,9 +62,6 @@ cp -v %{_source_dir}/linux-devel-env/android_sdk.sh $RPM_BUILD_ROOT/%{_profile_d
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 %pre
-npm install -g cordova
-npm install -g ionic
-
 ANT="http://apache.lauf-forum.at//ant/binaries/apache-ant-1.9.5-bin.zip"
 ADT="https://dl.google.com/android/adt/adt-bundle-linux-x86_64-20140702.zip"
 [ ! -e /tmp/$(basename $ANT) ] && wget "$ANT" -O /tmp/$(basename $ANT)
@@ -73,6 +70,8 @@ ADT="https://dl.google.com/android/adt/adt-bundle-linux-x86_64-20140702.zip"
 [ ! -e /usr/local/apache-ant ] && unzip /tmp/$(basename $ANT) -d /usr/local && ln -s /usr/local/apache-ant-1.9.5 /usr/local/apache-ant
 [ ! -e /usr/local/android ] && unzip /tmp/$(basename $ADT) -d /usr/local && ln -s /usr/local/adt-bundle-linux-x86_64-20140702 /usr/local/android
 
+npm install -g cordova
+npm install -g ionic
 
 
 %post
