@@ -7,7 +7,7 @@ Group: System Environment/Daemons
 URL: https://ekptrac.physik.uni-karlsruhe.de/trac/HappyFace
 Source0: Red-Comet.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-Requires: HappyFaceCore = 3.0.0-2
+Requires: HappyFaceCore = 3.0.0-3
 Requires: python >= 2.6
 Requires: httpd >= 2.0
 Requires: python-cherrypy >= 3.0
