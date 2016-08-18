@@ -54,14 +54,14 @@ build_rpm(){
 
 
 setup_HF_grid_env(){
-    [ ! -e /var/lib/gridkeys ] && mkdir -v $KEY_HOME && chmod 1777 $KEY_HOME
+    if [ -e $KEY_HOME/userkey.nopass.pem ]; then
+	cp -v $KEY_HOME/userkey.nopass.pem /var/lib/HappyFace3/cert/userkey.pem
+	cp -v $KEY_HOME/usercert.pem /var/lib/HappyFace3/cert/usercert.pem
+	chmod 400 /var/lib/HappyFace3/cert/userkey.pem
+	chmod 644 /var/lib/HappyFace3/cert/usercert.pem
 
-    cp -v $KEY_HOME/userkey.nopass.pem /var/lib/HappyFace3/cert/userkey.pem
-    cp -v $KEY_HOME/usercert.pem /var/lib/HappyFace3/cert/usercert.pem
-    chmod 400 /var/lib/HappyFace3/cert/userkey.pem
-    chmod 644 /var/lib/HappyFace3/cert/usercert.pem
-
-    chown happyface3:happyface3 /var/lib/HappyFace3/cert/userkey.pem /var/lib/HappyFace3/cert/usercert.pem
+	chown happyface3:happyface3 /var/lib/HappyFace3/cert/userkey.pem /var/lib/HappyFace3/cert/usercert.pem
+    fi
 }
 
 
