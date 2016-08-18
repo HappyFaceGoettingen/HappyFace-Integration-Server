@@ -1,7 +1,7 @@
 Summary: HappyFaceCore
 Name: HappyFaceCore
 Version: 3.0.0
-Release: 2
+Release: 3
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: https://ekptrac.physik.uni-karlsruhe.de/trac/HappyFace
@@ -22,7 +22,7 @@ Requires: python-lxml
 Requires: numpy
 Requires: mod_wsgi
 Requires: sqlite
-Requires: rpmforge-release
+Requires: rpmfusion-free-release
 
 
 ######################################################################
@@ -106,6 +106,8 @@ userdel -r %{happyface_user}
 
 
 %changelog
+* Mon Aug 18 2016 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-3
+- Added rpmfusion-free
 * Mon Jun 08 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-2
 - Integrated with integration server and changed the package name
 * Fri Jul 19 2013 Gen Kawamura <Gen.Kawamura@cern.ch> and Christian Wehrberger <cgwehrberger@gmail.com> 3.0.0-1

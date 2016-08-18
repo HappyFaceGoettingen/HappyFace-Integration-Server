@@ -1,7 +1,7 @@
 Summary: HappyFace-Red-Comet
 Name: HappyFace-Red-Comet
 Version: 3.0.0
-Release: 20150611
+Release: 20180818
 License: Apache License Version 2.0
 Group: System Environment/Daemons
 URL: https://ekptrac.physik.uni-karlsruhe.de/trac/HappyFace
@@ -31,7 +31,7 @@ Requires: yum-protectbase
 Requires: fetch-crl
 Requires: ca-policy-egi-core
 Requires: umd-release >= 3.0.0
-Requires: rpmforge-release
+Requires: rpmfusion-free-release
 Requires: kdesdk
 
 
@@ -120,6 +120,8 @@ service httpd start
 %{_devel_dir}/README.txt
 
 %changelog
+* Thu Aug 18 2016 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20160818
+- Added rpmfusion-free-release
 * Tue Jun 09 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-20150611
 - Integrated with integration-server
 * Fri Mar 06 2015 Gen Kawamura <Gen.Kawamura@cern.ch> 3.0.0-4
