@@ -88,7 +88,7 @@ source %{_profile_dir}/android_sdk.sh
 %files
 %defattr(-,%{happyface_user},%{happyface_group})
 %{_prefix}
-%{_profile_dir}
+%{_profile_dir}/*
 
 
 %changelog
