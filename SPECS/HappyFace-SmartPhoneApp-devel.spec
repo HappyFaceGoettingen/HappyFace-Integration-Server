@@ -70,11 +70,17 @@ ADT="https://dl.google.com/android/adt/adt-bundle-linux-x86_64-20140702.zip"
 [ ! -e /usr/local/apache-ant ] && unzip /tmp/$(basename $ANT) -d /usr/local && ln -s /usr/local/apache-ant-1.9.5 /usr/local/apache-ant
 [ ! -e /usr/local/android ] && unzip /tmp/$(basename $ADT) -d /usr/local && ln -s /usr/local/adt-bundle-linux-x86_64-20140702 /usr/local/android
 
-npm install -g cordova
-npm install -g ionic
-
 
 %post
+if ! which ionic; then
+    echo "Installing Ionic and Cordova modules"
+    npm install -g cordova@6.0.0 bplist-parser@0.1.1
+    npm install -g ionic@1.6.1
+    WRONG_FILE=/usr/lib/node_modules/ionic/node_modules/ionic-app-lib/lib/config.js
+    cat $WRONG_FILE | perl -pe "s/CONFIG_FILE:.*/CONFIG_FILE: \'.\/ionic\/ionic.config\',/g" > /tmp/config.js
+    cp -v /tmp/config.js $WRONG_FILE
+fi
+
 source %{_profile_dir}/android_sdk.sh
 
 
