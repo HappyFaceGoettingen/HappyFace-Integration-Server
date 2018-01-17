@@ -7,7 +7,7 @@ Group: System Environment/Daemons
 URL: http://nagios-goegrid.gwdg.de/category
 Source0: HappyFaceExtra.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-Requires: HappyFaceCore = 3.0.0-2
+Requires: HappyFaceCore = 3.0.0-3
 Requires: MySQL-python
 
 
