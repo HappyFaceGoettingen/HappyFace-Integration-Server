@@ -8,7 +8,8 @@ URL: http://nagios-goegrid.gwdg.de/category
 Source0: HappyFaceATLASModules.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Requires: HappyFaceCore = 3.0.0-3
-Requires: python-beautifulsoup
+#Requires: python-beautifulsoup
+Requires: python-BeautifulSoup
 Requires: python-matplotlib
 
 
