@@ -65,7 +65,15 @@ cd ..
 
 # copy files
 cp -r %{_source_dir} $RPM_BUILD_ROOT/%{_prefix}/HappyFace3
-mv -v $RPM_BUILD_ROOT/%{_prefix}/HappyFace3/httpd_confd_happyface3.conf $RPM_BUILD_ROOT/%{_sysconf_dir}
+
+# http WSGI config --> calling HappyFace/render.py
+%if 0%{rhel} == 6
+mv -v $RPM_BUILD_ROOT/%{_prefix}/HappyFace3/happyface3_el6.conf $RPM_BUILD_ROOT/%{_sysconf_dir}
+%endif
+
+%if 0%{rhel} == 7
+mv -v $RPM_BUILD_ROOT/%{_prefix}/HappyFace3/happyface3_el7.conf $RPM_BUILD_ROOT/%{_sysconf_dir}
+%endif
 
 # a symbolic link
 ln -s %{_prefix}/HappyFace3 $RPM_BUILD_ROOT/%{_prefix}/HappyFace
