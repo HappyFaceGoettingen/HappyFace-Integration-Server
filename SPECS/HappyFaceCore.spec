@@ -94,17 +94,7 @@ cd %{_prefix}/HappyFace3
 su %{happyface_user} -c "python acquire.py"
 echo "------------------------------------"
 
-%if 0%{rhel} == 6
- service httpd restart
-%endif
-
-%preun
-service httpd stop
-
-
 %postun
-service httpd start
-
 echo "Deleting user ..."
 userdel -r %{happyface_user}
 

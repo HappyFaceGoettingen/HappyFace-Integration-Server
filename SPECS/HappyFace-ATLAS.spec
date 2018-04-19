@@ -98,17 +98,6 @@ cd %{_prefix}
 su %{happyface_user} -c "python acquire.py"
 echo "------------------------------------"
 
-%if 0%{rhel} == 6
- service httpd start
-%endif
-
-%preun
-service httpd stop
-
-%postun
-service httpd start
-
-
 
 %files
 %defattr(-,%{happyface_user},%{happyface_group})
