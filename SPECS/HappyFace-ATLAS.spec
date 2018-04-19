@@ -108,9 +108,10 @@ service httpd start
 
 %files
 %defattr(-,%{happyface_user},%{happyface_group})
-%{_prefix}
 %{_prefix}/modified_core_system/*
-
+%{_category_cfg}/*
+%{_module_cfg}/*
+%{_prefix}/modules/*
 
 
 %changelog

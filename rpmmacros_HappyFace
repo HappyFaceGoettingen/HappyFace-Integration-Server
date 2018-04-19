@@ -1,2 +1,2 @@
-%_topdir        /a/home/local/gen/var/grid-rpm/HappyFace-Integration-Server
+%_topdir        /a/home/local/gen/var/develop/HappyFace/HappyFace-Integration-Server
 %debug_package %{nil}
