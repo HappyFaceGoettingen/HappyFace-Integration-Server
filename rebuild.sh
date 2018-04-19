@@ -90,7 +90,7 @@ cd SOURCES
 ## Downloading zip archive
 GIT_ZIP="https://codeload.github.com/${GIT_GROUP}/${GIT_PROJECT}/zip"
 rm -rvf ${GIT_PROJECT}-${GIT_BRANCH}
-wget $GIT_ZIP/$GIT_BRANCH -O ${GIT_PROJECT}.zip
+wget -q $GIT_ZIP/$GIT_BRANCH -O ${GIT_PROJECT}.zip
 unzip ${GIT_PROJECT}.zip
 
 
