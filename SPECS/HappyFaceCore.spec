@@ -68,11 +68,11 @@ cp -r %{_source_dir} $RPM_BUILD_ROOT/%{_prefix}/HappyFace3
 
 # http WSGI config --> calling HappyFace/render.py
 %if 0%{rhel} == 6
-mv -v $RPM_BUILD_ROOT/%{_prefix}/HappyFace3/happyface3_el6.conf $RPM_BUILD_ROOT/%{_sysconf_dir}
+ mv -v $RPM_BUILD_ROOT/%{_prefix}/HappyFace3/happyface3_el6.conf $RPM_BUILD_ROOT/%{_sysconf_dir}
 %endif
 
 %if 0%{rhel} == 7
-mv -v $RPM_BUILD_ROOT/%{_prefix}/HappyFace3/happyface3_el7.conf $RPM_BUILD_ROOT/%{_sysconf_dir}
+ mv -v $RPM_BUILD_ROOT/%{_prefix}/HappyFace3/happyface3_el7.conf $RPM_BUILD_ROOT/%{_sysconf_dir}
 %endif
 
 # a symbolic link
@@ -94,10 +94,13 @@ cd %{_prefix}/HappyFace3
 su %{happyface_user} -c "python acquire.py"
 echo "------------------------------------"
 
-service httpd restart
+%if 0%{rhel} == 6
+ service httpd restart
+%endif
 
 %preun
 service httpd stop
+
 
 %postun
 service httpd start

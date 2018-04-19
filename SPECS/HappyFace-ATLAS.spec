@@ -67,7 +67,9 @@ cp -vr %{_source_dir}/modified_core_system $RPM_BUILD_ROOT/%{_prefix}
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 %pre
-service httpd stop
+%if 0%{rhel} == 6
+ service httpd stop
+%endif
 
 %post
 echo "Deploying modified core system ...."
@@ -96,7 +98,9 @@ cd %{_prefix}
 su %{happyface_user} -c "python acquire.py"
 echo "------------------------------------"
 
-service httpd start
+%if 0%{rhel} == 6
+ service httpd start
+%endif
 
 %preun
 service httpd stop
